@@ -55,12 +55,12 @@ double get_min_east(){
   
   while (fin >> Point_time) {
     fin >> eastSt;
+    fin.ignore(INT_MAX, '\n');
     
     if (eastSt < min_eastSt) {
       min_eastSt = eastSt;
     }
 
-    fin.ignore(INT_MAX, '\n');
   }
    
   std::cout << "Minimum storage in East basin: " << min_eastSt << " billion gallons \n";
@@ -85,14 +85,13 @@ double get_max_east(){
   
   getline(fin, junk); // read one line from the file
   
-  while (fin >> Point_time >> eastSt) {
-     fin >> eastSt;
+  while (fin >> Point_time) {
+    fin >> eastSt;
+    fin.ignore(INT_MAX, '\n');
 
     if (eastSt > max_eastSt) {
       max_eastSt = eastSt;
     }
-
-    fin.ignore(INT_MAX, '\n');
   }
   
   std::cout << "Maximum storage in East basin: " << max_eastSt << " billion gallons \n";
