@@ -13,5 +13,7 @@ int main()
   
   get_max_east();
 
+  compare_basins("09/13/2018");
+  
   return 0;
 }

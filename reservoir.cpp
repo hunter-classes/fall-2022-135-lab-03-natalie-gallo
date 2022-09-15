@@ -5,14 +5,13 @@
 #include <climits>
 #include "reservoir.h"
 
+//TASK A
+
 double get_east_storage(std::string date) {
   
   std::string junk;
   std::string Point_time;
   double eastSt;
-  //double eastEl;
-  //double westSt;
-  //double westEl;
   
   std::ifstream fin("Current_Reservoir_Levels.tsv");
   
@@ -36,7 +35,7 @@ double get_east_storage(std::string date) {
   return 0;
 }
 
-//this function should return the minimum storage in the East basin in the 2018.
+//TASK B
 
 double get_min_east(){
   std::string junk;
@@ -55,12 +54,11 @@ double get_min_east(){
   
   while (fin >> Point_time) {
     fin >> eastSt;
-    fin.ignore(INT_MAX, '\n');
+    fin.ignore(INT_MAX, '\n'); //ignores remaining columns
     
     if (eastSt < min_eastSt) {
       min_eastSt = eastSt;
     }
-
   }
    
   std::cout << "Minimum storage in East basin: " << min_eastSt << " billion gallons \n";
@@ -87,7 +85,7 @@ double get_max_east(){
   
   while (fin >> Point_time) {
     fin >> eastSt;
-    fin.ignore(INT_MAX, '\n');
+    fin.ignore(INT_MAX, '\n'); //ignores remaining columns
 
     if (eastSt > max_eastSt) {
       max_eastSt = eastSt;
@@ -100,4 +98,46 @@ double get_max_east(){
 
   return max_eastSt;
 }
+
+//TASK C
+
+std::string compare_basins(std::string date){
+  std::string junk;
+  std::string Point_time;
+  double eastSt;
+  double eastEl;
+  double westSt;
+  double westEl;
   
+  std::ifstream fin("Current_Reservoir_Levels.tsv");
+  
+  if (fin.fail()) {
+    std::cerr << "File cannot be opened for reading." << std::endl;
+    exit(1); // exit if failed to open the file
+  }
+  
+  getline(fin, junk); // read one line from the file
+
+  while (Point_time.compare(date) != 0){
+    fin >> Point_time;
+  }
+
+  fin >> eastSt;
+  //fin >> eastEl;
+  fin >> westSt;
+  //fin >> westEl;
+
+  if (eastSt > westSt){
+    std::cout << date << " East \n";
+  } else if (eastSt < westSt){
+    std::cout << date << " West \n";
+  } else if (eastSt == westSt){
+    std::cout << date << " Equal \n";
+  }
+  
+   fin.close();
+   return 0;
+}
+
+    
+    
