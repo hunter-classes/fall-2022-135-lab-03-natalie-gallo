@@ -3,6 +3,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <climits>
+#include <string>
 #include "reservoir.h"
 
 //TASK A
@@ -39,9 +40,9 @@ double get_east_storage(std::string date) {
 
 double get_min_east(){
   std::string junk;
-  std::string Point_time;
+  std::string date;
   double eastSt;
-  double min_eastSt;
+  double min = INT_MAX;
   
   std::ifstream fin("Current_Reservoir_Levels.tsv");
   
@@ -52,28 +53,27 @@ double get_min_east(){
   
   getline(fin, junk); // read one line from the file
   
-  while (fin >> Point_time) {
-    fin >> eastSt;
+  while (fin >> date >> eastSt) {
     fin.ignore(INT_MAX, '\n'); //ignores remaining columns
     
-    if (eastSt < min_eastSt) {
-      min_eastSt = eastSt;
+    if (eastSt < min) {
+      min = eastSt;
     }
   }
    
-  std::cout << "Minimum storage in East basin: " << min_eastSt << " billion gallons \n";
+  std::cout << "Minimum storage in East basin: " << min << " billion gallons \n";
   
   fin.close();
 
-  return min_eastSt;
+  return min;
 }
 
 double get_max_east(){
   std::string junk;
-  std::string Point_time;
+  std::string date;
   double eastSt;
-  double max_eastSt;
-    
+  double max = INT_MIN;
+  
   std::ifstream fin("Current_Reservoir_Levels.tsv");
   
   if (fin.fail()) {
@@ -83,21 +83,21 @@ double get_max_east(){
   
   getline(fin, junk); // read one line from the file
   
-  while (fin >> Point_time) {
-    fin >> eastSt;
+  while (fin >> date >> eastSt) {
     fin.ignore(INT_MAX, '\n'); //ignores remaining columns
-
-    if (eastSt > max_eastSt) {
-      max_eastSt = eastSt;
+    
+    if (eastSt > max) {
+      max = eastSt;
     }
   }
-  
-  std::cout << "Maximum storage in East basin: " << max_eastSt << " billion gallons \n";
+   
+  std::cout << "Maximum storage in East basin: " << max << " billion gallons \n";
   
   fin.close();
 
-  return max_eastSt;
+  return max;
 }
+
 
 //TASK C
 
@@ -123,9 +123,7 @@ std::string compare_basins(std::string date){
   }
 
   fin >> eastSt;
-  //fin >> eastEl;
   fin >> westSt;
-  //fin >> westEl;
 
   if (eastSt > westSt){
     std::cout << date << " East \n";
@@ -139,5 +137,5 @@ std::string compare_basins(std::string date){
    return 0;
 }
 
-    
+
     
