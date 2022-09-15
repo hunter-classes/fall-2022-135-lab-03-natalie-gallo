@@ -101,6 +101,7 @@ double get_max_east(){
 
 //TASK C
 
+/*
 std::string compare_basins(std::string date){
   std::string junk;
   std::string Point_time;
@@ -136,6 +137,38 @@ std::string compare_basins(std::string date){
    fin.close();
    return 0;
 }
+*/
 
+std::string compare_basins(std::string date){
+  std::string junk;
+  double eastSt;
+  double eastEl;
+  double westSt;
+  double westEl;
+  
+  std::ifstream fin("Current_Reservoir_Levels.tsv");
+  
+  if (fin.fail()) {
+    std::cerr << "File cannot be opened for reading." << std::endl;
+    exit(1); // exit if failed to open the file
+  }
+  
+  getline(fin, junk); // read one line from the file
+
+  while (fin >> date >> eastSt >> eastEl >> westSt >> westEl){
+    fin.ignore(INT_MAX, '\n'); //ignores remaining column;
+
+    if (eastSt > westSt){
+      std::cout << date << " East \n";
+    } else if (eastSt < westSt){
+      std::cout << date << " West \n";
+    } else if (eastSt == westSt){
+    std::cout << date << " Equal \n";
+    }
+  }
+  
+   fin.close();
+   return 0;
+}
 
     
