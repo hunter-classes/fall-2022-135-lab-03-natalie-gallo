@@ -6,15 +6,10 @@
 #include "reservoir.h"
 #include "reverseorder.h"
 
-int main(){
-  reverse_order("05/29/2018", "06/02/2018");
-  return 0;
-}
-
 void reverse_order(std::string date1, std::string date2){
 
   std::string junk;
-  std::string Point_time;
+  std::string file_date;
   double eastSt;
   double eastEl;
   double westSt;
@@ -29,14 +24,19 @@ void reverse_order(std::string date1, std::string date2){
 
   getline(fin, junk); // read one line from the file
 
-  while (Point_time.compare(date1) != 0){
-    fin >> Point_time;
+  while (fin >> file_date){
     fin.ignore(INT_MAX, '\n');
+    if (file_date == date1){
+      fin >> date1;
+    }
   }
 
-  while (Point_time.compare(date2) != 0){
-    fin >> Point_time;
+  while (fin >> file_date){
     fin.ignore(INT_MAX, '\n');
+
+    if (file_date == date2){
+      fin >> date2;
+    }
 
     range = range + 1;
   }
@@ -46,11 +46,14 @@ void reverse_order(std::string date1, std::string date2){
   std::string dates[SIZE];
   double west_elevation[SIZE];
 
-  while (dates[0].compare(date1) !=0) {
-    west_elevation[range] = westEl;
-    dates[range] = Point_time;
-    range = range + 1;
+  while (fin >> file_date >> eastSt >> eastEl >> westSt >> westEl) {
     fin.ignore(INT_MAX, '\n');
+    
+    if (dates[SIZE] <= date1){
+    west_elevation[range] = westEl;
+    dates[range] = file_date;
+    range = range + 1;
+    }
   }
 
   for (int i = SIZE - 1; i >= 0; i--){

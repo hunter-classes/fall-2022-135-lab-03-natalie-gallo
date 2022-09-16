@@ -7,7 +7,7 @@
 * GitHub username: natalie-gallo
 
 * Notes:
-
+Extension granted. Work in progress. Debugging C & D and tackling D.
 
 
 * General instructions:
