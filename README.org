@@ -7,7 +7,9 @@
 * GitHub username: natalie-gallo
 
 * Notes:
-Extension granted. Work in progress. Debugging C & D and tackling D.
+Extension granted. Lab completed!
+I was definitely overthinking things which made me mess up.
+Thank you again for the extra time!
 
 
 * General instructions:
