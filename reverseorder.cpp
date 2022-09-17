@@ -1,67 +1,64 @@
-#include <iostream>
-#include <fstream>
-#include <cstdlib>
-#include <climits>
-#include <string>
-#include "reservoir.h"
 #include "reverseorder.h"
+#include <climits>
+#include <cstdlib>
+#include <fstream>
+#include <iostream>
+#include <string>
 
-void reverse_order(std::string date1, std::string date2){
+void reverse_order(std::string date1, std::string date2) {
 
-  std::string junk;
   std::string file_date;
   double eastSt;
   double eastEl;
   double westSt;
   double westEl;
-  int range; 
-  
+
   std::ifstream fin("Current_Reservoir_Levels.tsv");
+
   if (fin.fail()) {
     std::cerr << "File cannot be opened for reading." << std::endl;
     exit(1); // exit if failed to open the file
   }
 
+  std::string junk;   // new string variable
   getline(fin, junk); // read one line from the file
 
-  while (fin >> file_date){
-    fin.ignore(INT_MAX, '\n');
-    if (file_date == date1){
-      fin >> date1;
-    }
-  }
+  bool start = false;
 
-  while (fin >> file_date){
-    fin.ignore(INT_MAX, '\n');
+  int length;
 
-    if (file_date == date2){
-      fin >> date2;
-    }
-
-    range = range + 1;
-  }
-
-  const int SIZE = range;
-
-  std::string dates[SIZE];
-  double west_elevation[SIZE];
+  std::string dates[365];
+  double west_elevation[365];
 
   while (fin >> file_date >> eastSt >> eastEl >> westSt >> westEl) {
-    fin.ignore(INT_MAX, '\n');
-    
-    if (dates[SIZE] <= date1){
-    west_elevation[range] = westEl;
-    dates[range] = file_date;
-    range = range + 1;
-    }
-  }
+  // this loop reads the file line-by-line
+  // extracting 5 values on each iteration
 
-  for (int i = SIZE - 1; i >= 0; i--){
+    fin.ignore(INT_MAX, '\n'); // skips to the end of line
+    
+    if (file_date == date1) {
+      start = true;
+    }
+
+    if (start){
+      dates[length] = file_date;
+      west_elevation[length] = westEl;
+      length++;
+    }
+
+    if (file_date == date2){
+      start = false;
+    }
+
+  }
+  
+  for (int i = length - 1; i >= 0; i--){
     std::cout << dates[i] << " " << west_elevation[i] << " ft \n";
   }
   
   fin.close();
 }
+
     
 
   
