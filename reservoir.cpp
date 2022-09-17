@@ -11,8 +11,11 @@
 double get_east_storage(std::string date) {
   
   std::string junk;
-  std::string Point_time;
+  std::string file_date;
   double eastSt;
+  double eastEl;
+  double westSt;
+  double westEl;
   
   std::ifstream fin("Current_Reservoir_Levels.tsv");
   
@@ -23,13 +26,12 @@ double get_east_storage(std::string date) {
   
   getline(fin, junk); // read one line from the file
 
-  while (Point_time.compare(date) != 0){
-    fin >> Point_time;
+  while (fin >> file_date >> eastSt >> eastEl >> westSt >> westEl){
+    fin.ignore(INT_MAX, '\n'); //ignores remaining columns
+    if (file_date == date){
+      std::cout << date << " " << "East basin storage: " << eastSt << " billion gallons \n";
+    }
   }
-
-  fin >> eastSt;
-  
-  std::cout << date << " " << "East basin storage: " << eastSt << " billion gallons \n";
   
   fin.close();
   
@@ -122,18 +124,17 @@ std::string compare_basins(std::string date){
     fin.ignore(INT_MAX, '\n'); //ignores remaining column;
 
     if (file_date == date){
+      
       if (eastEl > westEl){
-	std::cout << date << " East \n";
+	return "East \n";
       } else if (eastEl < westEl){
-	std::cout << date << " West \n";
+        return "West \n";
       } else if (eastEl == westEl){
-       std::cout << date << " Equal \n";
+	return  "Equal \n";
       }
     }
   }
   
    fin.close();
    return 0;
-}
-
-    
+}   
